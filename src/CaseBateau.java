@@ -5,22 +5,18 @@
  * @version 1.0
  */
 public class CaseBateau extends Case{
-	
-	/*
-	 * bateau a l emplacement de la case
-	 */
-	private Bateau bateau;
-	/*
-	 * 
+
+
+	/**
+	 * initialise le bateau a la case
 	 * @param b bateau ou il y a la case
 	 */
 	public CaseBateau(Bateau b) {
-		this.bateau = b;
+		super(b);
 	}
 	
 		
-	
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

@@ -17,7 +17,7 @@ public class Grille {
 	 */
 	private Case[][] grille;
 	
-	/*
+	/**
 	 * constructeur creant une grille de cases de base
 	 * @param x taille en X
 	 * @param y taille en Y
@@ -34,22 +34,26 @@ public class Grille {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		String res = "";
+		String res = "x|";
 		for (int i = 0; i < this.tailleX; i++) {
+			res += i+"|";
+		}
+		res += "\n";
+		for (int i = 0; i < this.tailleX; i++) {
+			res += i+"|";
 			for (int j = 0; j < this.tailleY; j++) {
-				res += grille[j][i];
+				res += grille[j][i]+"|";
 			}
 			res += "\n";
 		}
 		return res;
 	}
 	
-	/*
+	/**
 	 * place le bateau a l endroit souhaite 
 	 * @param b bateau a placer
 	 * @param position x du bateau
@@ -84,7 +88,7 @@ public class Grille {
 		return (this.grille[x][y] instanceof CaseBateauTouche || this.grille[x][y] instanceof CaseMerTouchee); 
 	}
 	
-	/*
+	/**
 	 * getteur tailleX
 	 * @return tailleX
 	 */
@@ -92,7 +96,7 @@ public class Grille {
 		return tailleX;
 	}
 	
-	/*
+	/**
 	 * getteur tailleY
 	 * @return tailleY
 	 */
@@ -100,7 +104,7 @@ public class Grille {
 		return tailleY;
 	}
 	
-	/*
+	/**
 	 * getteur grille
 	 * @return grille
 	 */
@@ -108,6 +112,11 @@ public class Grille {
 		return grille;
 	}
 	
-	
+	/**
+	 * permet de mettre a jour une case 
+	 */
+	public void setCase(Case c, int x, int y) {
+		this.grille[x][y] = c;
+	}
 	
 }

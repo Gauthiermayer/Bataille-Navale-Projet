@@ -29,7 +29,7 @@ public class Bateau {
 		this.vie-=1;
 	}
 	
-	/*
+	/**
 	 * fonction qui verifie si le bateau est coule ou non 
 	 * @return true si le bateau a 0 pv donc coule 
 	 */
@@ -41,13 +41,13 @@ public class Bateau {
 			return false;
 		}
 	}
-	/*
+	/**
 	 * @return la taille du bateau
 	 */
 	public int getSize() {
 		return size;
 	}
-	/*
+	/**
 	 * @return la vie restante du bateau
 	 */
 	public int getVie() {

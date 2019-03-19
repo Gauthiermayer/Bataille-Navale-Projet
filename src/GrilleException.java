@@ -7,7 +7,7 @@
 public class GrilleException extends Exception{
 
 	
-	/*
+	/**
 	 * constructeur de l exception
 	 * @param msg message a afficher 
 	 */

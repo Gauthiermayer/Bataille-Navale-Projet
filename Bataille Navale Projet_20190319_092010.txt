@@ -1,0 +1,2 @@
+ERROR - 09:20:10: org.xml.sax.SAXParseExceptionpublicId: /Bataille%20Navale%20Projet/src/Bateau.java; systemId: file:///Bataille%20Navale%20Projet/src/Bateau.java; lineNumber: 2; columnNumber: 1; Contenu non autorisé dans le prologue.
+ERROR - 09:20:10: org.xml.sax.SAXParseExceptionpublicId: /Bataille%20Navale%20Projet/src/Bateau.java; systemId: file:///Bataille%20Navale%20Projet/src/Bateau.java; lineNumber: 2; columnNumber: 1; Contenu non autorisé dans le prologue.
