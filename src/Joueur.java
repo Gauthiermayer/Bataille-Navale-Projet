@@ -71,8 +71,12 @@ public class Joueur {
 	 * @param x coordonne x a attaquer 
 	 * @param y coordonne y a attaquer 
 	 */
-	public void attaquer(Joueur j2, int x, int y) {
-		if (j2.getGrille_bateauTab()[x][y] instanceof CaseBateau) {
+	public void attaquer(Joueur j2, int x, int y) throws GrilleException {
+		if (j2.getGrille_bateau().estTouche(x, y)) {
+			throw new GrilleException("Erreur: Case deja touchee");
+		}
+		
+		else if (j2.getGrille_bateauTab()[x][y] instanceof CaseBateau) {
 			j2.getGrille_bateauTab()[x][y].getBateau().prendreDegat();
 			j2.setCaseGrilleBateau(new CaseBateauTouche(), x, y);
 			this.setCaseGrilleAttaque(new CaseBateauTouche(), x, y);
@@ -119,13 +123,24 @@ public class Joueur {
 	 * @param position y du bateau
 	 * @param dir direction du bateau, h = horizontalement, v = verticalement
 	 */
-	public void placerBateau(Bateau b, int x, int y, char dir) {
+	public void placerBateau(Bateau b, int x, int y, char dir) throws GrilleException {
 		try {
 			this.grille_bateau.placerBateau(b, x, y, dir);
 		}
 		catch (GrilleException e) {
-			System.out.println(e);
+			throw e;
+		}	
+	}
+	
+	
+	public boolean aPerdu() {
+		boolean perdu = true;
+		for (Bateau b : liste_bateau) {
+			if (!b.estCoule()) {
+				perdu = false;
+			}
 		}
 		
+		return perdu;		
 	}
 }

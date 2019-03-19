@@ -61,8 +61,30 @@ public class Grille {
 	 * @param dir direction du bateau, h = horizontalement, v = verticalement
 	 */
 	public void placerBateau(Bateau b, int x, int y, char dir) throws GrilleException{
+		boolean dispo = true;
 		
+		//verif si l emplacement du bateau est dispo
 		if (dir == 'v') {
+			for (int i = x; i < x+b.getSize();i++) {
+				if(this.grille[x][i] instanceof CaseBateau) {
+					dispo = false;
+				}
+			}			
+		}
+		else if (dir == 'h') {
+			for (int i = x; i < x+b.getSize();i++) {
+				if(this.grille[x][i] instanceof CaseBateau) {
+					dispo = false;
+				}
+			}
+		}
+		
+		if(!dispo) {
+			throw new GrilleException("Erreur: emplacement indisponible");
+		}
+
+		//placement si tout va bien
+		else if (dir == 'v') {
 			for (int i = x; i < x+b.getSize();i++) {
 				this.grille[x][i] = new CaseBateau(b);
 			}			
