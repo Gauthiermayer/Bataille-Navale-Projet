@@ -15,14 +15,24 @@ public class Jeu {
 		
 		System.out.println("Taille Y de la grille : ");
 		int y = sc.nextInt();
-				
+		
+		Joueur bot;
+		while(true) {
+			try {
+				bot = new Bot(nb_b,x,y);
+				break;
+			}
+			catch(BotException e) {
+				continue;
+			}
+		}
 		
 		
-		Joueur j1 = new Joueur(nb_b, x, y);
+		Joueur j1 = new VraiJoueur(nb_b, x, y);
 		
 		System.out.println("-----------------");
 		
-		System.out.println("Joueur 1 place ses bateaux");
+		System.out.println("Joueur place ses bateaux");
 		for (Bateau b : j1.getListe_bateau()) {
 			while(true) {
 				try {
@@ -31,42 +41,81 @@ public class Jeu {
 					break;
 				}
 				catch(GrilleException e){
-					System.out.println(e);
 					System.out.println("Réassayez");
 					continue;
 				}
 				catch(ArrayIndexOutOfBoundsException e2) {
-					System.out.println(e2);
 					System.out.println("Réassayez");
 					continue;
+				} catch (Exception e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
 				}
 			}
 		}
 		
-		while(!j1.aPerdu()) {
-			System.out.println("Attaquer : ");
-			while(true) {
-				try {
-					j1.attaquer(j1, sc.nextInt(), sc.nextInt());
-					break;
+
+		
+		System.out.println("Vos Bateaux : ");
+		System.out.println(j1.getGrille_bateau());
+		System.out.println("Grille de l'autre joueur :");
+		System.out.println(j1.getGrille_attaque());
+		
+		int i = 1;
+		while(!j1.aPerdu() && !bot.aPerdu()) {
+			
+			if (i%2 == 1) {
+				System.out.println("Attaquer : ");
+				while(true) {
+					try {
+						j1.attaquer(bot, sc.nextInt(), sc.nextInt());
+						break;
+					}
+					catch(IndexOutOfBoundsException e) {
+						System.out.println(e);
+						System.out.println("Réassayez");
+						continue;					
+					}
+					catch (GrilleException e2) {
+						System.out.println(e2);
+						System.out.println("Réassayez");
+						continue;	
+					} catch (Exception e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
 				}
-				catch(IndexOutOfBoundsException e) {
-					System.out.println(e);
-					System.out.println("Réassayez");
-					continue;					
-				}
-				catch (GrilleException e2) {
-					System.out.println(e2);
-					System.out.println("Réassayez");
-					continue;	
-				}
+				
 			}
 			
+			else {
+				System.out.println("Le bot attaque...");
+				while(true) {
+					try {
+						bot.attaquer(j1, 0, 0);
+						break;
+					}
+					catch(IndexOutOfBoundsException e) {
+						System.out.println(e);
+						continue;					
+					}
+					catch (GrilleException e2) {
+						System.out.println(e2);
+						continue;	
+					} catch (Exception e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
+				}
+				
+				
+				System.out.println("Vos Bateaux : ");
+				System.out.println(j1.getGrille_bateau());
+				System.out.println("Grille de l'autre joueur :");
+				System.out.println(j1.getGrille_attaque());
+			}
+			i++;
 			
-			System.out.println("Vos Bateaux : ");
-			System.out.println(j1.getGrille_bateau());
-			System.out.println("Grille de l'autre joueur :");
-			System.out.println(j1.getGrille_attaque());
 		}
 		System.out.println("fin");
 				

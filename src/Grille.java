@@ -101,13 +101,14 @@ public class Grille {
 	}
 	
 	/**
-	 * verifie si on a deja tire sur la case
+	 * verifie si on a deja tire sur la case ou est en dehors de la grille 
 	 * @param x coordone x de la case
 	 * @param y coordone y de la case
 	 * @return true si la case a deja ete touchee
 	 */
 	public boolean estTouche(int x, int y) {
-		return (this.grille[x][y] instanceof CaseBateauTouche || this.grille[x][y] instanceof CaseMerTouchee); 
+		return (this.grille[x][y] instanceof CaseBateauTouche || this.grille[x][y] instanceof CaseMerTouchee 
+				|| x >= tailleX || x < 0 || y >= tailleY || y < 0); 
 	}
 	
 	/**
