@@ -107,8 +107,16 @@ public class Grille {
 	 * @return true si la case a deja ete touchee
 	 */
 	public boolean estTouche(int x, int y) {
-		return (this.grille[x][y] instanceof CaseBateauTouche || this.grille[x][y] instanceof CaseMerTouchee 
-				|| x >= tailleX || x < 0 || y >= tailleY || y < 0); 
+		if(x >= tailleX || x < 0 || y >= tailleY || y < 0) {
+			return true;
+		}
+		else if(this.grille[x][y] instanceof CaseBateauTouche || this.grille[x][y] instanceof CaseMerTouchee){
+			return true;
+		}
+		else {
+			return false;
+		}
+
 	}
 	
 	/**

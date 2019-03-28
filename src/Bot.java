@@ -31,10 +31,7 @@ public class Bot extends Joueur{
 	
 	@Override
 	public void attaquer(Joueur j2, int x, int y) throws GrilleException {
-		/**
-		x = (int)(Math.random()*9999)%j2.getGrille_bateau().getTailleX();
-		y = (int)(Math.random()*9999)%j2.getGrille_bateau().getTailleY();
-		*/
+		
 		if (xTouche == -1 || yTouche == -1) {
 			x = (int)(Math.random()*9999)%j2.getGrille_bateau().getTailleX();
 			y = (int)(Math.random()*9999)%j2.getGrille_bateau().getTailleY();
@@ -53,8 +50,16 @@ public class Bot extends Joueur{
 			}
 			//attaque les cases autour de la case ou un bateau a ete touche afin de trouver le reste du bateau
 			else {
-				x = x + (int)((Math.random()*9999)%2 - 1);
-				y = y + (int)((Math.random()*9999)%2 - 1);
+				int[] tab_pos = {-1,0,1};
+				
+				x = xTouche + tab_pos[(int)((Math.random()*9999)%tab_pos.length)];
+				if(x == xTouche) {
+					y = yTouche + tab_pos[(int)((Math.random()*9999)%tab_pos.length)];
+				}
+				else {
+					y = yTouche;
+				}
+				
 			}
 			
 		}
@@ -76,7 +81,6 @@ public class Bot extends Joueur{
 		}
 		
 	}
-	
 	
 	
 	
