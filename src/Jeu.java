@@ -1,6 +1,11 @@
 import java.io.*;
 import java.util.*;
-
+/**
+ * classe permettant de créer un jeu, de l'initialiser et de le lancer
+ * possibilité de sauvegarder et de charger un Jeu
+ * @author Gauthier Mayer
+ *
+ */
 public class Jeu implements Serializable{
 
 		
@@ -14,8 +19,14 @@ public class Jeu implements Serializable{
 		 * @param nb_b le nombre de bateau avec lequel on veut jouer 
 		 * @param x la taille x de la grille de jeu
 		 * @param y la taille y de la grille de jeu
+		 * @throws java.lang.Exception quand les paramètres du jeu sont faux
 		 */
-		public Jeu(int nb_b,int x,int y) {
+		public Jeu(int nb_b,int x,int y) throws Exception{
+			
+			if (nb_b < 1 || x < 5 || y < 5) {
+				throw new GrilleException("erreur d'initialisation");
+			}
+			
 			while(true) {
 				try {
 					this.bot = new Bot(nb_b,x,y);
@@ -25,16 +36,16 @@ public class Jeu implements Serializable{
 					continue;
 				}
 			}
-			
+						
 			j1 = new VraiJoueur(nb_b, x, y);
-			
-			
 		}
+		
+		
+		
 		/**
-		 * méthode qui gere le jeu 
+		 * methode qui initialise le jeu, permet eele placement des bateaux
 		 */
-		public void jouer() {
-			
+		public void initialiser() {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("-----------------");
 			
@@ -42,27 +53,52 @@ public class Jeu implements Serializable{
 			for (Bateau b : j1.getListe_bateau()) {
 				while(true) {
 					try {
-						j1.placerBateau(b, sc.nextInt(), sc.nextInt(), 'h');
+						String dir = "?";
+						int x;
+						int y;
+						System.out.println("Direction du bateau : horizontalement (h) ou verticale (v) ?");
+						while(!dir.equals("h") && !dir.equals("v")){
+							dir = sc.nextLine();							
+						}
+						
+						System.out.println("Position x du bateau :");
+						x = sc.nextInt();
+						System.out.println("Position y du bateau :");
+						y = sc.nextInt();
+						
+						
+						j1.placerBateau(b, x, y, dir.charAt(0));
 						System.out.println(j1.getGrille_bateau());
 						break;
 					}
 					catch(GrilleException e){
-						System.out.println("Réassayez");
+						System.out.println(" Case déjà utilisée, réassayez");
 						continue;
 					}
 					catch(ArrayIndexOutOfBoundsException e2) {
+						System.out.println("Hors du jeu, réassayez");
+						continue;
+					} 
+					catch (Exception e3) {
 						System.out.println("Réassayez");
 						continue;
-					} catch (Exception e3) {
-						// TODO Auto-generated catch block
-						e3.printStackTrace();
 					}
 				}
 			}
 			
-
 			
-			System.out.println("Vos Bateaux : ");
+			
+		}
+		
+		
+		/**
+		 * méthode qui gere le jeu, permet aux joueurs d'attaquer
+		 */
+		public void jouer() {
+			
+			Scanner sc = new Scanner(System.in);
+		
+			System.out.println(j1);
 			System.out.println(j1.getGrille_bateau());
 			System.out.println("Grille de l'autre joueur :");
 			System.out.println(j1.getGrille_attaque());
@@ -75,6 +111,7 @@ public class Jeu implements Serializable{
 					while(true) {
 						try {
 							j1.attaquer(bot, sc.nextInt(), sc.nextInt());
+							this.sauvegarder();
 							break;
 						}
 						catch(IndexOutOfBoundsException e) {
@@ -86,9 +123,6 @@ public class Jeu implements Serializable{
 							System.out.println(e2);
 							System.out.println("Réassayez");
 							continue;	
-						} catch (Exception e3) {
-							// TODO Auto-generated catch block
-							e3.printStackTrace();
 						}
 					}
 					
@@ -102,20 +136,18 @@ public class Jeu implements Serializable{
 							break;
 						}
 						catch(IndexOutOfBoundsException e) {
-							System.out.println(e);
 							continue;					
 						}
 						catch (GrilleException e2) {
-							System.out.println("test");
-							continue;	
-						} catch (Exception e3) {
-							// TODO Auto-generated catch block
-							e3.printStackTrace();
+							continue;
+						} 
+						catch (Exception e3) {
+							continue;
 						}
 					}
 					
 					
-					System.out.println("Vos Bateaux : ");
+					System.out.println(j1);
 					System.out.println(j1.getGrille_bateau());
 					System.out.println("Grille de l'autre joueur :");
 					System.out.println(j1.getGrille_attaque());
@@ -123,7 +155,12 @@ public class Jeu implements Serializable{
 				i++;
 			}
 			
-			System.out.println("fin");
+			if(j1.aPerdu()) {
+				System.out.println("Désolé le bot a gagné...");
+			}
+			else {
+				System.out.println("Félicitations vous avez gagné !");
+			}
 	
 		}
 		
@@ -134,11 +171,16 @@ public class Jeu implements Serializable{
 		 */
 		public void sauvegarder() {
 			try {
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\Users\\Gauthier\\Desktop\\bataille_navale.save"));
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(".\\bataille_navale.save"));
 				oos.writeObject(this);
 				oos.close();
 			}
 			catch (IOException e) {
+				System.out.println(e);
+				System.out.println("erreur de sauvegarde");
+			}
+			catch (Exception e2) {
+				System.out.println(e2);
 				System.out.println("erreur de sauvegarde");
 			}
 		}
@@ -147,15 +189,16 @@ public class Jeu implements Serializable{
 		 * methode qui charge un jeu sauvegarde dans un fichier 
 		 * @return le jeu que l on souahite charge ou null si aucune jeu sauvegarde 
 		 */
-		public Jeu charger() {
+		public static Jeu charger() {
 			Jeu res;
 			try {
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\Gauthier\\Desktop\\bataille_navale.save"));
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(".\\bataille_navale.save"));
 				res = (Jeu)(ois.readObject());
 				ois.close();
 				
 			}
 			catch (IOException e) {
+				System.out.println(e);
 				res = null;
 			}
 			catch (ClassNotFoundException e2) {

@@ -1,5 +1,12 @@
 import java.util.ArrayList;
-
+import java.util.Collection;
+import java.util.Collections;
+/**
+ * Classe premettant de creer et de gerer un bot (IA) qui est un Joueur
+ * 
+ * @author Gauthier Mayer
+ * @version 1.0
+ */
 public class Bot extends Joueur{
 	
 	
@@ -13,6 +20,7 @@ public class Bot extends Joueur{
 	 * @param nb_bateau nombre de bateau avec lequel on veut jouer 
 	 * @param tx tailleX des grilles
 	 * @param ty tailleY des grilles
+	 * @throws BotException quand le bot ne peut pas être créé
 	 */
 	public Bot(int nb_bateau,int tx, int ty) throws BotException{
 		super(nb_bateau,tx,ty);
@@ -69,7 +77,16 @@ public class Bot extends Joueur{
 			throw new GrilleException("Erreur: Case deja touchee");
 		}
 		else if (j2.getGrille_bateauTab()[x][y] instanceof CaseBateau) {
-			j2.getGrille_bateauTab()[x][y].getBateau().prendreDegat();
+			Bateau touche = j2.getGrille_bateauTab()[x][y].getBateau();
+			touche.prendreDegat();
+			
+			//retire de la liste des bateau si coulé 
+			if (touche.estCoule()) {
+				j2.getListe_bateau().remove(touche);
+			}
+			
+			Collections.sort(j2.getListe_bateau());
+			
 			j2.setCaseGrilleBateau(new CaseBateauTouche(), x, y);
 			this.setCaseGrilleAttaque(new CaseBateauTouche(), x, y);
 			xTouche = x;

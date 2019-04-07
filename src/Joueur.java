@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 /**
@@ -6,7 +7,7 @@ import java.util.*;
  * @author Gauthier Mayer
  * @version 1.0
  */
-public abstract class Joueur {
+public abstract class Joueur implements Serializable {
 	
 	/**
 	 * liste des bateaux que possede le joueur 
@@ -37,21 +38,26 @@ public abstract class Joueur {
 	 * @param j2 joueur à attaquer 
 	 * @param x coordonne x a attaquer (ignore si bot) 
 	 * @param y coordonne y a attaquer (ignore si bot)
+	 * @throws java.lang.Exception quand l'attaque ne peut pas être faite 
 	 */
 	public abstract void attaquer(Joueur j2, int x, int y) throws Exception;
 	
 	/**
 	 * place le bateau a l endroit souhaite (parametres ignores si le joueur est un bot)
 	 * @param b bateau a placer
-	 * @param position x du bateau
-	 * @param position y du bateau
+	 * @param x position x du bateau
+	 * @param y position y du bateau
 	 * @param dir direction du bateau, h = horizontalement, v = verticalement
+	 * @throws java.lang.Exception quand il y a une erreur de placement 
 	 */
 	public abstract void placerBateau(Bateau b, int x, int y, char dir) throws Exception;
 	
 	
 	/**
 	 * permet de mettre a jour une case de la grille des bateaux
+	 * @param c case à mettre à jour
+	 * @param x position x de la case
+	 * @param y position y de la case
 	 */
 	public void setCaseGrilleBateau(Case c, int x, int y) {
 		this.grille_bateau.setCase(c, x, y);
@@ -59,17 +65,26 @@ public abstract class Joueur {
 	
 	/**
 	 * permet de mettre a jour une case de la grille d attaque
+	 * @param c case à mettre à jour
+	 * @param x position x de la case
+	 * @param y position y de la case
 	 */
 	public void setCaseGrilleAttaque(Case c, int x, int y) {
 		this.grille_attaque.setCase(c, x, y);
 	}
 	
-		
+	/**
+	 * getteur de la grille contenant les bateaux
+	 * @return grille des bateaux
+	 */
 	public Grille getGrille_bateau() {
 		return grille_bateau;
 	}
 
-
+	/**
+	 * getteur de la grille contenant les cases attaquées 
+	 * @return grille d attaque
+	 */
 	public Grille getGrille_attaque() {
 		return grille_attaque;
 	}
@@ -113,5 +128,18 @@ public abstract class Joueur {
 		}
 		
 		return perdu;		
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		String res = "Vos bateaux : \n";
+		for (Bateau b : liste_bateau) {
+			res += " - Taille " + b.getSize() + " > " + (b.getVie()*100)/b.getSize() + "%\n";
+		}
+		
+		return res;
+			
 	}
 }

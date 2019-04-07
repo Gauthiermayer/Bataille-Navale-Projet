@@ -1,10 +1,12 @@
+import java.io.*;
+
 /**
  * Classe premettant de creer des bateaux
  * 
  * @author Gauthier Mayer
  * @version 1.0
  */
-public class Bateau {
+public class Bateau implements Serializable,Comparable{
 	
 	
 	/**
@@ -15,7 +17,7 @@ public class Bateau {
 	
 	/**
 	 * constructeur du bateau
-	 * @param s taille du bateau
+	 * @param taille la taille du bateau
 	 */
 	public Bateau(int taille) {
 		this.size = taille;
@@ -47,11 +49,26 @@ public class Bateau {
 	public int getSize() {
 		return size;
 	}
+	
 	/**
 	 * @return la vie restante du bateau
 	 */
 	public int getVie() {
 		return vie;
 	}
-		
+	
+	
+	@Override
+	public int compareTo(Object o) {
+		Bateau b = (Bateau)o;
+		if (this.vie < b.getVie()) {
+			return -1;
+		}
+		else if (this.vie == b.getVie()) {
+			return 0;
+		}		
+		return 1;
+	}
+	
+	
 }

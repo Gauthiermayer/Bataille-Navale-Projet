@@ -1,10 +1,12 @@
+import java.io.*;
+
 /**
  * Classe premettant de creer une grille contenant des cases
  * 
  * @author Gauthier Mayer
  * @version 1.0
  */
-public class Grille {
+public class Grille implements Serializable{
 
 	/**
 	 * tailles de la grille
@@ -56,9 +58,10 @@ public class Grille {
 	/**
 	 * place le bateau a l endroit souhaite 
 	 * @param b bateau a placer
-	 * @param position x du bateau
-	 * @param position y du bateau
+	 * @param x position x du bateau
+	 * @param y position y du bateau
 	 * @param dir direction du bateau, h = horizontalement, v = verticalement
+	 * @throws GrilleException quand la case est pas disponible
 	 */
 	public void placerBateau(Bateau b, int x, int y, char dir) throws GrilleException{
 		boolean dispo = true;
@@ -145,6 +148,9 @@ public class Grille {
 	
 	/**
 	 * permet de mettre a jour une case 
+	 * @param c type à mettre à jour
+	 * @param x position x de la case à mettre à jour
+	 * @param y position y de la case à mettre à jour
 	 */
 	public void setCase(Case c, int x, int y) {
 		this.grille[x][y] = c;

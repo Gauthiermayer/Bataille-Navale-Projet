@@ -1,10 +1,12 @@
+import java.io.*;
+
 /**
  * Classe premettant de creer des cases 
  * 
  * @author Gauthier Mayer
  * @version 1.0
  */
-public class Case {
+public class Case implements Serializable{
 
 	/**
 	 * bateau a l emplacement de la case (null si pas CaseBateau)
